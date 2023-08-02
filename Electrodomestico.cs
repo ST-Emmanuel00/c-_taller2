@@ -20,10 +20,10 @@ namespace Electrodomesticos
 
         // ATRIBUTOS
 
-        private double precioBase;
-        private Color color;
-        private char consumoEnergetico;
-        private double peso;
+        protected double precioBase;
+        protected Color color;
+        protected char consumoEnergetico;
+        protected double peso;
 
 
         // ATRIBUTOS POR DEFECTO
@@ -32,16 +32,16 @@ namespace Electrodomesticos
         
         private double _peso = 5;
 
-        private string _color = "BLANCO";
+        private Color _color = Color.BLANCO;
         
         private char _consumo_energia = 'F';
        
         public Electrodomestico()
         {
-            _precio_base = _precio_base;
-            _peso = _peso;
-            _color = _color;
-            _consumo_energia = _consumo_energia;
+            this.precioBase = _precio_base;
+            this.peso = _peso;
+            this.color = _color;
+            this.consumoEnergetico = _consumo_energia;
 
         }
 
@@ -58,47 +58,96 @@ namespace Electrodomesticos
         {
             this.precioBase = precio_base;
             this.peso = peso;
-            _color = _color;
-            _consumo_energia = _consumo_energia;
+            this.color = _color;
+            this.consumoEnergetico = _consumo_energia;
 
         }
 
         // METODOS
 
-        private void Comprobas_consumo_energetico (char letra)
+        public virtual void Describir()
         {
-            // Verificamos que la letra esté entre A y F, en mayúsculas o minúsculas
-            if (Char.ToUpper(letra) >= 'A' && Char.ToUpper(letra) <= 'F')
-            {
-                consumoEnergetico = Char.ToUpper(letra);
-            }
-            else
-            {
-                consumoEnergetico = _consumo_energia;
-            }
+            Console.WriteLine($"\n\nPrecio base: {precioBase}\nPeso: {peso}\nColor: {color}\nConsumo energia: {consumoEnergetico}\n\n");
         }
 
-        public void Describir ()
+        private void Comprobas_consumo_energetico (char letra)
         {
-
-            Console.WriteLine($"Precio base = {precioBase}");
-            Console.WriteLine($"Peso = {peso}");
-            Console.WriteLine($"Color = {color}");
-            Console.WriteLine($"Consumo energia = {consumoEnergetico}");
-
-
+            if (Char.ToUpper(letra) >= 'A' && Char.ToUpper(letra) <= 'F') consumoEnergetico = Char.ToUpper(letra);
+            else consumoEnergetico = _consumo_energia;
         }
 
         private void Comprobar_color(Color color)
         {
-            if (color == Color.BLANCO || color == Color.NEGRO || color == Color.ROJO || color == Color.AZUL || color == Color.GRIS)
+
+            if (color == Color.BLANCO || color == Color.NEGRO || color == Color.ROJO || color == Color.AZUL || color == Color.GRIS) this.color = color;
+            else this.color = _color;
+            
+        }
+
+        public virtual double Precio_final()
+        {
+
+            double precio = 0;
+
+            switch (this.consumoEnergetico)
             {
-                this.color = color;
+
+                case 'A':
+
+                    precioBase += precio;
+
+                    break;
+
+                case 'B':
+
+                    precio = 80;
+                    precioBase += precio;
+
+                    break;
+
+                case 'C':
+
+                    precio = 60;
+                    precioBase += precio;
+
+                    break;
+
+                case 'D':
+
+                    precio = 50;
+                    precioBase += precio;
+
+                    break;
+
+                case 'E':
+
+                    precio = 30;
+                    precioBase += precio;
+
+                    return precioBase;
+
+                case 'F':
+
+                    precio = 10;
+                    precioBase += precio;
+
+                    break;
+
+                default:
+                    break;
+
             }
-            else
-            {
-                this.color = Color.BLANCO;
-            }
+
+            if (peso > 0 && peso <= 19) precioBase += 10;
+            else if (peso >= 20 && peso <= 49) precioBase += 50;
+            else if (peso >= 50 && peso <= 79) precioBase += 80;
+            else if (peso >= 80) precioBase += 100;
+
+
+            return precioBase;
+
+
+
         }
 
 
